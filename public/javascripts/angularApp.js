@@ -113,4 +113,39 @@ angular.module('commentWar', ['ui.router'])
 			o.posts.push(data);
 		});
 	};
+
+	// upvote
+	o.upvote = function(post) {
+		return $http.put('/posts/' + post._id + '/upvote').success(function(data) {
+			post.upvotes += 1;
+		});
+	};
+
+	// get single post
+	o.get = function(id) {
+		return $http.get('/posts/' + id).then(function (res) {
+			return res.data;
+		});
+	};
+
+	// delete single post 
+	o.delete = function(post) {
+		return $http.delete('/posts/' + post._id).success(function(data) {
+			angular.copy(data, o.posts);
+		});
+	}
+
+	// add comment
+	0.addComment = function(id, comment){
+		return $http.post('/posts/' + id + '/comments', comment);
+	};
+
+	// upvote comment
+	o.upvoteComment = function(post, comment) {
+		return $http.put('/posts/' + post._id + '/comments/' + comment._id + '/upvote')
+		           .success(function(data) {
+		           	    comment.upvotes += 1;
+		           });
+	};
+	return o;
 }])
